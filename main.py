@@ -2,6 +2,12 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import logging
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+    handlers=[logging.StreamHandler()],
+)
+
 def get_device() -> str:
     if torch.cuda.is_available():
         logging.info(f"Running CUDA on {torch.cuda.device_count()} devices")
