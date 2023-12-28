@@ -1,6 +1,19 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
+import logging
 
-device = "cuda" # the device to load the model onto
+def get_device() -> str:
+    if torch.cuda.is_available():
+        logging.info(f"Running CUDA on {torch.cuda.device_count()} devices")
+        return "cuda"
+    elif torch.backends.mps.is_available():
+        logging.info("Running on MPS")
+        return "mps"
+    else:
+        logging.info("Running on CPU")
+        return "cpu"
+    
+device = get_device()
 
 model = AutoModelForCausalLM.from_pretrained("mistralai/Mistral-7B-Instruct-v0.2")
 model.to(device)
